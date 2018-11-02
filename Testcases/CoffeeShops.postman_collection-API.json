@@ -1,0 +1,291 @@
+{
+	"info": {
+		"_postman_id": "e32c2345-4c01-4bb8-90c1-269e65b3b74a",
+		"name": "CoffeeShops",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET /CoffeeShops/{id}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0928aa89-4c67-4e33-896c-2c67853b7c97",
+						"exec": [
+							"pm.test(\"GET /CoffeeShops/{id}:Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"GET /CoffeeShops/{id}:Validate request body\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.eql(JSON.parse(\"{\\\"name\\\": \\\"Bel Cafe\\\",\\\"city\\\": \\\"Vancouver\\\",\\\"id\\\": 1}\"));",
+							"});",
+							"",
+							"pm.test(\"GET /CoffeeShops/{id}:Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"pm.test('GET /CoffeeShops/{id}:Validate response body to be valid json', function() {",
+							"  pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test('GET /CoffeeShops/{id}:Validate request with POST action', function() {",
+							"pm.sendRequest({url:'http://192.168.99.100:8000/api/CoffeeShops/1',method:'POST'}, function (err, response) {",
+							"     pm.expect(response).to.have.property('code', 404);",
+							"});",
+							"});",
+							"",
+							"pm.test('GET /CoffeeShops/{id}:Validate request with blank parameter value', function() {",
+							"pm.sendRequest({url:'http://192.168.99.100:8000/api/CoffeeShops/',method:'GET'}, function (err, response) {",
+							"     pm.expect(response).to.have.status(200);",
+							"});",
+							"});",
+							"",
+							"// Assuming 999 id doesn't exist in the system",
+							"pm.test('GET /CoffeeShops/{id}:Validate request with invalid (non-existing id) parameter value', function() {",
+							"pm.sendRequest({url:'http://192.168.99.100:8000/api/CoffeeShops/999',method:'GET'}, function (err, response) {",
+							"     pm.expect(response).to.have.status(404);",
+							"});",
+							"});",
+							"",
+							"pm.test('GET /CoffeeShops/{id}:Validate request with invalid (characters instead of number) parameter value', function() {",
+							"pm.sendRequest({url:'http://192.168.99.100:8000/api/CoffeeShops/abc',method:'GET'}, function (err, response) {",
+							"     pm.expect(response).to.have.status(404);",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "9867cfe4-9f7c-4b45-a1b2-9f1a398c3f56",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://192.168.99.100:8000/api/CoffeeShops/1",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"99",
+						"100"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"CoffeeShops",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /CoffeeShops",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "28256872-a3b1-4a87-ae34-89b8562b1d7a",
+						"exec": [
+							"pm.test(\"POST /CoffeeShops:Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('POST /CoffeeShops:Validate response body to be valid json', function() {",
+							"  pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"POST /CoffeeShops:Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "fe45bb3c-8983-41e5-9b5a-4e122c7fcc45",
+						"exec": [
+							"",
+							"pm.sendRequest({url:'http://192.168.99.100:3000/api/CoffeeShops/',method:'GET'}, function (err, response) {",
+							"    var res=response.json();",
+							"    console.log(res);",
+							"    for (var i = 0; i < res.length; i++){",
+							"  // look for the entry with a matching `code` value",
+							"  if (res[i].name == \"Test-Post\"){",
+							"     // we found it",
+							"    pm.globals.set(\"id_value\", res[i].id);",
+							"  }",
+							"}",
+							"});",
+							"var id_val= pm.globals.get(\"id_value\");",
+							"pm.sendRequest({url:'http://192.168.99.100:3000/api/CoffeeShops/'+id_val,method:'DELETE'}, function (err, response) {",
+							"    console.log(response);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Test-Post\",\r\n  \"city\": \"Galway\"\r\n}"
+				},
+				"url": {
+					"raw": "http://192.168.99.100:3000/api/CoffeeShops",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"99",
+						"100"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"CoffeeShops"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /CoffeeShops/{id}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c6a97667-445b-444b-a0d4-2966fe411ff2",
+						"exec": [
+							"pm.test(\"PUT /CoffeeShops:Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('PUT /CoffeeShops:Validate response body to be valid json', function() {",
+							"  pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"PUT /CoffeeShops:Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Test-Post\",\r\n  \"city\": \"Galway\"\r\n}"
+				},
+				"url": {
+					"raw": "http://192.168.99.100:3000/api/CoffeeShops/300",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"99",
+						"100"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"CoffeeShops",
+						"300"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /CoffeeShops/{id}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2e7bd172-90eb-479f-a89c-6f36828feee5",
+						"exec": [
+							"pm.test(\"DELETE /CoffeeShops:Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('DELETE /CoffeeShops:Validate response body to be valid json', function() {",
+							"  pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"DELETE /CoffeeShops:Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://192.168.99.100:3000/api/CoffeeShops/300",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"99",
+						"100"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"CoffeeShops",
+						"300"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
